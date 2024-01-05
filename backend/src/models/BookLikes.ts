@@ -9,20 +9,20 @@ builder.prismaObject("BookLikes", {
   }),
 });
 
-builder.mutationField("createOneMessage", (t) =>
-  t.prismaField({
-    type: "Message",
-    args: {
-      userId: t.arg.int({ required: true }),
-      body: t.arg.string({ required: true }),
-    },
-    resolve: async (_query, _root, args) => {
-      return prisma.message.create({
-        data: {
-          body: args.body,
-          userId: args.userId,
-        },
-      });
-    },
-  })
-);
+// builder.mutationField("createOneMessage", (t) =>
+//   t.prismaField({
+//     type: "Message",
+//     args: {
+//       userId: t.arg.int({ required: true }),
+//       body: t.arg.string({ required: true }),
+//     },
+//     resolve: async (_query, _root, args) => {
+//       return prisma.message.create({
+//         data: {
+//           body: args.body,
+//           userId: args.userId,
+//         },
+//       });
+//     },
+//   })
+// );
