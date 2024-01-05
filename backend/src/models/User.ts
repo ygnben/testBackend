@@ -6,6 +6,10 @@ builder.prismaObject("User", {
     id: t.exposeID("id"),
     name: t.exposeString("name"),
     // messages: t.relation("messages"),
+
+    createdAt: t.expose("createdAt", {
+      type: "Date",
+    }),
   }),
 });
 
