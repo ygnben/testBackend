@@ -1,13 +1,11 @@
 import { builder } from "../builder";
 import { prisma } from "../db";
 
-builder.prismaObject("Message", {
+builder.prismaObject("BookLikes", {
   fields: (t) => ({
     id: t.exposeID("id"),
-    body: t.exposeString("body"),
-    createdAt: t.expose("createdAt", {
-      type: "Date",
-    }),
+    userId: t.exposeID("userId"),
+    bookId: t.exposeID("bookId"),
   }),
 });
 

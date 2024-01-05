@@ -24,14 +24,15 @@ builder.prismaObject("Book", {
   }),
 });
 
-builder.queryField("users", (t) =>
+builder.queryField("books", (t) =>
   t.prismaField({
-    type: ["User"],
+    type: ["Book"],
     resolve: async (query) => {
-      return prisma.user.findMany({ ...query });
+      return prisma.book.findMany({ ...query });
     },
   })
 );
+
 // builder.mutationField("createOneMessage", (t) =>
 //   t.prismaField({
 //     type: "Message",
