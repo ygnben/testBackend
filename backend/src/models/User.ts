@@ -5,6 +5,7 @@ builder.prismaObject("User", {
   fields: (t) => ({
     id: t.exposeID("id"),
     name: t.exposeString("name"),
+    password: t.exposeString("password"),
     // messages: t.relation("messages"),
 
     createdAt: t.expose("createdAt", {
