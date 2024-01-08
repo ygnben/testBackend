@@ -24,9 +24,9 @@ builder.prismaObject("User", {
     id: t.exposeID("id"),
     name: t.exposeString("name"),
     password: t.exposeString("password"),
-    // token: t.exposeString("token", { nullable: true }),
+    token: t.exposeString("token", { nullable: true }),
     // messages: t.relation("messages"),
-    token: t.relation("token"),
+    // token: t.relation("token"),
 
     createdAt: t.expose("createdAt", {
       type: "Date",
@@ -84,18 +84,19 @@ builder.mutationField("login", (t) =>
 
       if (!passwordIsValid) {
         throw new Error("Invalid password");
-      } else {
-        createJsonWebToken(
-          "the issuer",
-          user,
-          "process.env.VITE_TOKEN_SECRET"
-        ).then((token) => {
-          prisma.token.create({
-            data: { token: token, user: { connect: { id: user.id } } },
-          });
-        });
       }
-
+      // else {
+      await createJsonWebToken(
+        "the issuer",
+        user,
+        "process.env.VITE_TOKEN_SECRET"
+      ).then((token) => {
+        user.token = token;
+        console.log("🚀 ~ file: User.ts:96 ~ ).then ~ user.token:", user.token);
+        // user.save();
+      });
+      // }
+      console.log("🚀 ~ file: User.ts:96 ~ ).then ~ user.token:", user.token);
       return user;
     },
   })

@@ -21,6 +21,7 @@ model User {
   name      String
   username  String      @unique
   password  String
+  token     String?
   Token     Token[]
   BookLikes BookLikes[]
 
