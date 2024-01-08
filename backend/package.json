@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "ts-node-dev src/index.ts"
   },
   "prisma": {
     "seed": "ts-node-dev prisma/seed.ts"
@@ -15,14 +16,15 @@
   "dependencies": {
     "@apollo/server": "^4.10.0",
     "@pothos/core": "^3.41.0",
+    "@pothos/plugin-prisma": "^3.63.0",
     "@prisma/client": "5.7.1",
-    "@types/node": "^20.10.6",
-    "prisma": "^5.7.1",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.3.3",
+    "@types/node": "^20.10.7",
     "graphql": "^16.8.1",
     "graphql-scalars": "^1.22.4",
-    "@pothos/plugin-prisma": "^3.63.0"
+    "jose": "^5.2.0",
+    "prisma": "^5.7.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
   },
   "devDependencies": {
     "ts-node-dev": "^2.0.0"

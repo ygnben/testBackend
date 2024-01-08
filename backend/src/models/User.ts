@@ -1,10 +1,29 @@
 import { builder } from "../builder";
 import { prisma } from "../db";
+import * as jose from "jose";
+
+async function createJsonWebToken(iss, sub, secret) {
+  const header = {
+    alg: "HS256", // Token generation algorithm
+    typ: "JWT",
+  };
+
+  const payload = {
+    iss: iss,
+    sub: sub,
+    exp: Math.round(Date.now() / 1000) + 60, // token is valid for 60 seconds
+  };
+
+  return await new jose.SignJWT(payload)
+    .setProtectedHeader(header)
+    .sign(new TextEncoder().encode(secret));
+}
 
 builder.prismaObject("User", {
   fields: (t) => ({
     id: t.exposeID("id"),
     name: t.exposeString("name"),
+    password: t.exposeString("password"),
     // messages: t.relation("messages"),
 
     createdAt: t.expose("createdAt", {
@@ -12,6 +31,13 @@ builder.prismaObject("User", {
     }),
   }),
 });
+
+// // By unique identifier
+// const user = await prisma.user.findUnique({
+//   where: {
+//     email: 'elsa@prisma.io',
+//   },
+// })
 
 builder.queryField("users", (t) =>
   t.prismaField({
@@ -22,6 +48,18 @@ builder.queryField("users", (t) =>
   })
 );
 
+// builder.queryField("user", (t) =>
+//   t.prismaField({
+//     type: "User",
+//     resolve: async (query) => {
+//       return prisma.user.findUnique({
+//         where: {
+//           name: test,
+//         },
+//       });
+//     },
+//   })
+// );
 builder.mutationField("login", (t) =>
   t.prismaField({
     type: "User",
@@ -44,6 +82,8 @@ builder.mutationField("login", (t) =>
 
       if (!passwordIsValid) {
         throw new Error("Invalid password");
+      } else {
+        // createJsonWebToken("the issuer", user, process.env.VITE_TOKEN_SECRET);
       }
 
       return user;
