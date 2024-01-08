@@ -91,7 +91,7 @@ builder.mutationField("login", (t) =>
           "process.env.VITE_TOKEN_SECRET"
         ).then((token) => {
           prisma.token.create({
-            data: { token: token },
+            data: { token: token, user: { connect: { id: user.id } } },
           });
         });
       }
