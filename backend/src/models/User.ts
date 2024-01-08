@@ -2,22 +2,22 @@ import { builder } from "../builder";
 import { prisma } from "../db";
 import * as jose from "jose";
 
-async function createJsonWebToken(iss, sub, secret) {
-  const header = {
-    alg: "HS256", // Token generation algorithm
-    typ: "JWT",
-  };
+// async function createJsonWebToken(iss, sub, secret) {
+//   const header = {
+//     alg: "HS256", // Token generation algorithm
+//     typ: "JWT",
+//   };
 
-  const payload = {
-    iss: iss,
-    sub: sub,
-    exp: Math.round(Date.now() / 1000) + 60, // token is valid for 60 seconds
-  };
+//   const payload = {
+//     iss: iss,
+//     sub: sub,
+//     exp: Math.round(Date.now() / 1000) + 60, // token is valid for 60 seconds
+//   };
 
-  return await new jose.SignJWT(payload)
-    .setProtectedHeader(header)
-    .sign(new TextEncoder().encode(secret));
-}
+//   return await new jose.SignJWT(payload)
+//     .setProtectedHeader(header)
+//     .sign(new TextEncoder().encode(secret));
+// }
 
 builder.prismaObject("User", {
   fields: (t) => ({
