@@ -2,29 +2,31 @@ import { builder } from "../builder";
 import { prisma } from "../db";
 import * as jose from "jose";
 
-// async function createJsonWebToken(iss, sub, secret) {
-//   const header = {
-//     alg: "HS256", // Token generation algorithm
-//     typ: "JWT",
-//   };
+async function createJsonWebToken(iss: string, sub: any, secret: string) {
+  const header = {
+    alg: "HS256", // Token generation algorithm
+    typ: "JWT",
+  };
 
-//   const payload = {
-//     iss: iss,
-//     sub: sub,
-//     exp: Math.round(Date.now() / 1000) + 60, // token is valid for 60 seconds
-//   };
+  const payload = {
+    iss: iss,
+    sub: sub,
+    exp: Math.round(Date.now() / 1000) + 60, // token is valid for 60 seconds
+  };
 
-//   return await new jose.SignJWT(payload)
-//     .setProtectedHeader(header)
-//     .sign(new TextEncoder().encode(secret));
-// }
+  return await new jose.SignJWT(payload)
+    .setProtectedHeader(header)
+    .sign(new TextEncoder().encode(secret));
+}
 
 builder.prismaObject("User", {
   fields: (t) => ({
     id: t.exposeID("id"),
     name: t.exposeString("name"),
     password: t.exposeString("password"),
+    // token: t.exposeString("token", { nullable: true }),
     // messages: t.relation("messages"),
+    token: t.relation("token"),
 
     createdAt: t.expose("createdAt", {
       type: "Date",
@@ -83,7 +85,15 @@ builder.mutationField("login", (t) =>
       if (!passwordIsValid) {
         throw new Error("Invalid password");
       } else {
-        // createJsonWebToken("the issuer", user, process.env.VITE_TOKEN_SECRET);
+        createJsonWebToken(
+          "the issuer",
+          user,
+          "process.env.VITE_TOKEN_SECRET"
+        ).then((token) => {
+          prisma.token.create({
+            data: { token: token },
+          });
+        });
       }
 
       return user;
