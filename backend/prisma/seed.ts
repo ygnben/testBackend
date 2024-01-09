@@ -24,9 +24,19 @@ async function main() {
     data: {
       title: "test",
       desc: "test",
-      img: "test",
+      img: "https://books.google.com/books?id=zyTCAlFPjgYC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
       catagory: "test",
       price: 10,
+    },
+  });
+
+  await prisma.book.create({
+    data: {
+      title: "test2",
+      desc: "test2",
+      img: "https://books.google.com/books?id=zyTCAlFPjgYC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
+      catagory: "test2",
+      price: 120,
     },
   });
   // await prisma.user.create({

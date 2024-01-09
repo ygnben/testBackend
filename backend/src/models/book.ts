@@ -24,14 +24,55 @@ builder.prismaObject("Book", {
   }),
 });
 
-builder.queryField("books", (t) =>
-  t.prismaField({
+// builder.queryField("Books", (t) =>
+//   t.prismaField({
+//     type: ["Book"],
+//     resolve: async (query) => {
+//       return prisma.book.findMany({ ...query });
+//     },
+//   })
+// ),
+
+builder.queryFields((t) => ({
+  books: t.prismaField({
     type: ["Book"],
     resolve: async (query) => {
       return prisma.book.findMany({ ...query });
     },
-  })
-);
+  }),
+
+  book: t.prismaField({
+    type: "Book",
+    nullable: true,
+    args: {
+      id: t.arg.int({ required: true }),
+    },
+    resolve: async (query, _, args) => {
+      return prisma.book.findUnique({
+        where: {
+          id: args.id,
+        },
+        ...query,
+      });
+    },
+  }),
+}));
+
+// builder.queryField("Book", (t) =>
+//   t.prismaField({
+//     type: "Book",
+//     args:{
+//       id: t.arg.int({ required: true }),
+//     }
+//     resolve: async (query,_,args) => {
+//       return prisma.book.findUnique({
+//         where: {
+//           id: args.id,
+//         },
+//       });
+//     },
+//   })
+// );
 
 // builder.mutationField("createOneMessage", (t) =>
 //   t.prismaField({
