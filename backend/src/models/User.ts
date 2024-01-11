@@ -22,7 +22,7 @@ async function createJsonWebToken(iss: string, sub: any, secret: string) {
 builder.prismaObject("User", {
   fields: (t) => ({
     id: t.exposeID("id"),
-    name: t.exposeString("name"),
+    username: t.exposeString("username"),
     password: t.exposeString("password"),
     token: t.exposeString("token", { nullable: true }),
     // messages: t.relation("messages"),
@@ -102,20 +102,21 @@ builder.mutationField("login", (t) =>
   })
 );
 
-builder.mutationField("createOneUser", (t) =>
+builder.mutationField("signUp", (t) =>
   t.prismaField({
     type: "User",
+    nullable: true,
     args: {
-      name: t.arg.string({ required: true }),
-      email: t.arg.string({ required: true }),
+      // name: t.arg.string({ required: true }),
+      // email: t.arg.string({ required: true }),
       username: t.arg.string({ required: true }),
       password: t.arg.string({ required: true }),
     },
     resolve: async (_query, _root, args) => {
       return prisma.user.create({
         data: {
-          name: args.name,
-          email: args.email,
+          // name: args.name,
+          // email: args.email,
           username: args.username,
           password: args.password,
         },

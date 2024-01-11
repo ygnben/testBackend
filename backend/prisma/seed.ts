@@ -15,8 +15,6 @@ async function main() {
     data: {
       username: "test",
       password: "test",
-      name: "test",
-      email: "test@test",
     },
   });
 
