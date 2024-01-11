@@ -25,6 +25,7 @@ builder.prismaObject("User", {
     username: t.exposeString("username"),
     password: t.exposeString("password"),
     token: t.exposeString("token", { nullable: true }),
+    shopCart: t.relation("ShopCart"),
     // messages: t.relation("messages"),
     // token: t.relation("token"),
 
@@ -119,6 +120,7 @@ builder.mutationField("signUp", (t) =>
           // email: args.email,
           username: args.username,
           password: args.password,
+          ShopCart: { create: {} },
         },
       });
     },

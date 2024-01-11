@@ -5,10 +5,42 @@ builder.prismaObject("ShopCart", {
   fields: (t) => ({
     id: t.exposeID("id"),
     userId: t.exposeID("userId"),
-    productId: t.exposeID("productId"),
-    quantity: t.exposeInt("quantity"),
   }),
 });
+
+builder.mutationField("createCart", (t) =>
+  t.prismaField({
+    type: "ShopCart",
+    args: {
+      userId: t.arg.int({ required: true }),
+    },
+    resolve: async (_query, _root, args) => {
+      return prisma.shopCart.create({
+        data: {
+          userId: args.userId,
+        },
+      });
+    },
+  })
+);
+
+builder.mutationField("addItem", (t) =>
+  t.prismaField({
+    type: "ShopCart",
+    args: {
+      userId: t.arg.int({ required: true }),
+    },
+    resolve: async (_query, _root, args) => {
+      return prisma.shopCart.create({
+        data: {
+          // body: args.body,
+          userId: args.userId,
+          create,
+        },
+      });
+    },
+  })
+);
 
 // builder.mutationField("createOneMessage", (t) =>
 //   t.prismaField({
