@@ -4,14 +4,35 @@ import { prisma } from "../db";
 builder.prismaObject("CartItem", {
   fields: (t) => ({
     id: t.exposeID("id"),
-    productId: t.exposeID("productId"),
-    quantity: t.exposeInt("quantity"),
+    
+    qty:t.exposeInt("qty"),
+    book:t.relation("book"),
+    shopcart: t.relation("shopCart"),
     createdAt: t.expose("createdAt", {
       type: "Date",
     }),
   }),
 });
 
+builder.mutationField("addToCart", (t) =>
+  t.prismaField({
+    type: "CartItem",
+    args: {
+      qty: t.arg.int({ required: true }),
+      shopCartId: t.arg.int({ required: true }),
+      bookId: t.arg.int({ required: true }),
+    },
+    resolve: async (_query, _root, args) => {
+      return prisma.cartItem.create({
+        data: {
+          qty: args.qty,
+          shopCartId: args.shopCartId,
+          bookId: args.bookId,
+        
+        },
+      });
+    },
+  })
 // builder.mutationField("createOneMessage", (t) =>
 //   t.prismaField({
 //     type: "Message",

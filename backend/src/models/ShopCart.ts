@@ -8,21 +8,21 @@ builder.prismaObject("ShopCart", {
   }),
 });
 
-builder.mutationField("createCart", (t) =>
-  t.prismaField({
-    type: "ShopCart",
-    args: {
-      userId: t.arg.int({ required: true }),
-    },
-    resolve: async (_query, _root, args) => {
-      return prisma.shopCart.create({
-        data: {
-          userId: args.userId,
-        },
-      });
-    },
-  })
-);
+// builder.mutationField("createCart", (t) =>
+//   t.prismaField({
+//     type: "ShopCart",
+//     args: {
+//       userId: t.arg.int({ required: true }),
+//     },
+//     resolve: async (_query, _root, args) => {
+//       return prisma.shopCart.create({
+//         data: {
+//           userId: args.userId,
+//         },
+//       });
+//     },
+//   })
+// );
 
 builder.mutationField("addItem", (t) =>
   t.prismaField({
@@ -35,7 +35,7 @@ builder.mutationField("addItem", (t) =>
         data: {
           // body: args.body,
           userId: args.userId,
-          create,
+          // create,
         },
       });
     },

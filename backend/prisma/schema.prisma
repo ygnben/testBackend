@@ -22,24 +22,24 @@ model User {
   username  String      @unique
   password  String
   token     String?
-  Token     Token[]
-  BookLikes BookLikes[]
+  // Token     Token[]
+  bookLikes BookLikes[]
 
-  ShopCart  ShopCart[]
-  Order     Order[]
-  Comment   Comment[]
+  shopCart  ShopCart[]
+  order     Order[]
+  comment   Comment[]
   createdAt DateTime   @default(now())
   updatedAt DateTime   @default(now()) @updatedAt
 
   @@map("users")
 }
 
-model Token {
-  id Int   @id @default(autoincrement())
-  user User @relation(fields: [userId], references: [id])
-  userId Int
-  token String
-}
+// model Token {
+//   id Int   @id @default(autoincrement())
+//   user User @relation(fields: [userId], references: [id])
+//   userId Int
+//   token String
+// }
 model Book {
   id        Int         @id @default(autoincrement())
   title     String
@@ -47,10 +47,10 @@ model Book {
   img       String
   catagory  String
   price     Int
-  BookLikes BookLikes[]
-  Comment   Comment[]
-  CartItem  CartItem[]
-  OrderItem OrderItem[]
+  bookLikes BookLikes[]
+  comment   Comment[]
+  cartItem  CartItem[]
+  orderItem OrderItem[]
 
 
   createdAt DateTime @default(now())
@@ -78,15 +78,15 @@ model ShopCart {
   // total     Int
   createdAt DateTime   @default(now())
   updatedAt DateTime   @default(now()) @updatedAt
-  CartItem  CartItem[]
+  cartItem  CartItem[]
 }
 
 model CartItem {
   id         Int      @id @default(autoincrement())
   book       Book     @relation(fields: [bookId], references: [id])
   bookId     Int
-  shopcart   ShopCart @relation(fields: [shopcartId], references: [id])
-  shopcartId Int
+  shopCart   ShopCart @relation(fields: [shopCartId], references: [id])
+  shopCartId Int
   qty        Int
   createdAt  DateTime @default(now())
   updatedAt  DateTime @default(now()) @updatedAt
@@ -99,7 +99,7 @@ model Order {
   total     Int
   createdAt DateTime    @default(now())
   updatedAt DateTime    @default(now()) @updatedAt
-  OrderItem OrderItem[]
+  orderItem OrderItem[]
 }
 
 model OrderItem {

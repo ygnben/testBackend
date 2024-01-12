@@ -25,7 +25,7 @@ builder.prismaObject("User", {
     username: t.exposeString("username"),
     password: t.exposeString("password"),
     token: t.exposeString("token", { nullable: true }),
-    shopCart: t.relation("ShopCart"),
+    shopCart: t.relation("shopCart"),
     // messages: t.relation("messages"),
     // token: t.relation("token"),
 
@@ -106,7 +106,6 @@ builder.mutationField("login", (t) =>
 builder.mutationField("signUp", (t) =>
   t.prismaField({
     type: "User",
-    nullable: true,
     args: {
       // name: t.arg.string({ required: true }),
       // email: t.arg.string({ required: true }),
@@ -114,15 +113,43 @@ builder.mutationField("signUp", (t) =>
       password: t.arg.string({ required: true }),
     },
     resolve: async (_query, _root, args) => {
-      return prisma.user.create({
+      const res = await prisma.user.create({
         data: {
           // name: args.name,
           // email: args.email,
           username: args.username,
           password: args.password,
-          ShopCart: { create: {} },
+          // ShopCart: { create: {} },
         },
       });
+      await prisma.shopCart.create({ data: { userId: res.id } });
+      return res;
     },
   })
 );
+
+// builder.mutationField("signUp", (t) =>
+//   t.prismaField({
+//     type: "User",
+//     nullable: true,
+//     args: {
+//       // name: t.arg.string({ required: true }),
+//       // email: t.arg.string({ required: true }),
+//       username: t.arg.string({ required: true }),
+//       password: t.arg.string({ required: true }),
+//     },
+//     resolve: async (_query, _root, args) => {
+//       const { id } = prisma.user.create({
+//         data: {
+//           // name: args.name,
+//           // email: args.email,
+//           username: args.username,
+//           password: args.password,
+//           // ShopCart: { create: {} },
+//         },
+//       });
+
+//       prisma.shopCart.create({ data: { userId: id } });
+//     },
+//   })
+// );
