@@ -1,6 +1,7 @@
 import { builder } from "../builder";
 import { prisma } from "../db";
 import * as jose from "jose";
+import jwt from "jsonwebtoken";
 
 async function createJsonWebToken(iss: string, sub: any, secret: string) {
   const header = {
@@ -87,17 +88,24 @@ builder.mutationField("login", (t) =>
         throw new Error("Invalid password");
       }
       // else {
-      await createJsonWebToken(
-        "the issuer",
-        user,
-        "process.env.VITE_TOKEN_SECRET"
-      ).then((token) => {
-        user.token = token;
-        console.log("🚀 ~ file: User.ts:96 ~ ).then ~ user.token:", user.token);
-        // user.save();
+
+      const token = jwt.sign({ user }, "process.env.VITE_TOKEN_SECRET", {
+        expiresIn: "1 day",
       });
+      if (token) {
+        user.token = token;
+      }
+      // await createJsonWebToken(
+      //   "the issuer",
+      //   user,
+      //   "process.env.VITE_TOKEN_SECRET"
+      // ).then((token) => {
+      //   user.token = token;
+      //   // console.log("🚀 ~ file: User.ts:96 ~ ).then ~ user.token:", user.token);
+      //   // user.save();
+      // });
       // }
-      console.log("🚀 ~ file: User.ts:96 ~ ).then ~ user.token:", user.token);
+
       return user;
     },
   })
