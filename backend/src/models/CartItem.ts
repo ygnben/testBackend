@@ -19,20 +19,20 @@ builder.mutationField("addToCart", (t) =>
     type: "CartItem",
     args: {
       qty: t.arg.int({ required: true }),
-      shopCartId: t.arg.int({ required: true }),
+      // shopCartId: t.arg.int({ required: true }),
       bookId: t.arg.int({ required: true }),
     },
     resolve: async (_query, _root, args, contextValue: any) => {
-      const shopCart = await prisma.shopCart.findUnique({
-        where: { id: contextValue },
-      });
-      if (!shopCart) {
-        throw new Error("Shopping cart not found");
-      }
+      // const shopCart = await prisma.shopCart.findUnique({
+      //   where: { id: contextValue },
+      // });
+      // if (!shopCart) {
+      //   throw new Error("Shopping cart not found");
+      // }
       return prisma.cartItem.create({
         data: {
           qty: args.qty,
-          shopCartId: shopCart.id,
+          shopCartId: 1,
           bookId: args.bookId,
         },
       });
