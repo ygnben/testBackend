@@ -4,9 +4,9 @@ import { prisma } from "../db";
 builder.prismaObject("CartItem", {
   fields: (t) => ({
     id: t.exposeID("id"),
-    
-    qty:t.exposeInt("qty"),
-    book:t.relation("book"),
+
+    qty: t.exposeInt("qty"),
+    book: t.relation("book"),
     shopcart: t.relation("shopCart"),
     createdAt: t.expose("createdAt", {
       type: "Date",
@@ -22,17 +22,24 @@ builder.mutationField("addToCart", (t) =>
       shopCartId: t.arg.int({ required: true }),
       bookId: t.arg.int({ required: true }),
     },
-    resolve: async (_query, _root, args) => {
+    resolve: async (_query, _root, args, contextValue: any) => {
+      const shopCart = await prisma.shopCart.findUnique({
+        where: { id: contextValue },
+      });
+      if (!shopCart) {
+        throw new Error("Shopping cart not found");
+      }
       return prisma.cartItem.create({
         data: {
           qty: args.qty,
-          shopCartId: args.shopCartId,
+          shopCartId: shopCart.id,
           bookId: args.bookId,
-        
         },
       });
     },
   })
+);
+
 // builder.mutationField("createOneMessage", (t) =>
 //   t.prismaField({
 //     type: "Message",

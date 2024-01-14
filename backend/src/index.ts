@@ -47,8 +47,11 @@ const getUser = async (token: string) => {
     const SECRET = "process.env.VITE_TOKEN_SECRET";
     // const { payload } = jose.decodeJwt(token1);
     const decoded = jwt.verify(token1, SECRET);
-    console.log("🚀 ~ getUser ~ decoded:", decoded.user.id);
-    return decoded;
+    const obj = decoded;
+
+    const userId = (obj as any).user.id || 1;
+    console.log(userId);
+    return userId;
   }
   // const secret = jose.base64url.decode(SECRET);
   // const decoded = jwtDecode(token1);
@@ -90,6 +93,7 @@ const startServer = async () => {
       //   user = getUser(token);
       // }
       const user = getUser(token);
+      console.log("🚀 ~ context: ~ user:", user);
       // optionally block the user
       // we could also check user roles/permissions here
       if (!user)
@@ -103,6 +107,7 @@ const startServer = async () => {
         });
 
       // add the user to the context
+
       return { user };
     },
   });
