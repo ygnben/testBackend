@@ -13,6 +13,18 @@ builder.prismaObject("CartItem", {
     }),
   }),
 });
+builder.queryField("cartItems", (t) =>
+  t.prismaField({
+    type: ["CartItem"],
+    resolve: async (query, _root, _args, contextValue) => {
+      const shopCart = await prisma.shopCart.findFirst({
+        where: { userId: contextValue.user },
+      });
+      console.log({ ...query });
+      return prisma.cartItem.findMany({ where: { shopCartId: shopCart?.id } });
+    },
+  })
+);
 
 builder.mutationField("addToCart", (t) =>
   t.prismaField({
@@ -22,17 +34,20 @@ builder.mutationField("addToCart", (t) =>
       // shopCartId: t.arg.int({ required: true }),
       bookId: t.arg.int({ required: true }),
     },
-    resolve: async (_query, _root, args, contextValue: any) => {
-      // const shopCart = await prisma.shopCart.findUnique({
-      //   where: { id: contextValue },
-      // });
-      // if (!shopCart) {
-      //   throw new Error("Shopping cart not found");
-      // }
+    resolve: async (_query, _root, args, contextValue) => {
+      // console.log("🚀 ~ resolve: ~ contextValue:", typeof contextValue.user);
+
+      const shopCart = await prisma.shopCart.findFirst({
+        where: { userId: contextValue.user },
+      });
+      console.log("🚀 ~ resolve: ~ shopCart:", shopCart?.id);
+      if (!shopCart) {
+        throw new Error("Shopping cart not found");
+      }
       return prisma.cartItem.create({
         data: {
           qty: args.qty,
-          shopCartId: 4,
+          shopCartId: shopCart?.id,
           bookId: args.bookId,
         },
       });

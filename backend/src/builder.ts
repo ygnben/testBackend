@@ -9,6 +9,7 @@ export const builder = new SchemaBuilder<{
     Date: { Input: Date; Output: Date };
   };
   PrismaTypes: PrismaTypes;
+  Context: { user: number };
 }>({
   plugins: [PrismaPlugin],
   prisma: {

@@ -50,7 +50,10 @@ const getUser = async (token: string) => {
     const obj = decoded;
 
     const userId = (obj as any).user.id || 1;
-    console.log(userId);
+    // const obj2 = {
+    //   id: userId,
+    // };
+    // console.log(userId);
     return userId;
   }
   // const secret = jose.base64url.decode(SECRET);
@@ -92,19 +95,19 @@ const startServer = async () => {
       // if (token) {
       //   user = getUser(token);
       // }
-      const user = getUser(token);
+      const user = await getUser(token);
       console.log("🚀 ~ context: ~ user:", user);
       // optionally block the user
       // we could also check user roles/permissions here
-      if (!user)
-        // throwing a `GraphQLError` here allows us to specify an HTTP status code,
-        // standard `Error`s will have a 500 status code by default
-        throw new GraphQLError("User is not authenticated", {
-          extensions: {
-            code: "UNAUTHENTICATED",
-            http: { status: 401 },
-          },
-        });
+      // if (!user)
+      //   // throwing a `GraphQLError` here allows us to specify an HTTP status code,
+      //   // standard `Error`s will have a 500 status code by default
+      //   throw new GraphQLError("User is not authenticated", {
+      //     extensions: {
+      //       code: "UNAUTHENTICATED",
+      //       http: { status: 401 },
+      //     },
+      //   });
 
       // add the user to the context
 
