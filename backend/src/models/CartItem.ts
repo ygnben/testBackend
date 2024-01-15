@@ -32,7 +32,7 @@ builder.mutationField("addToCart", (t) =>
       return prisma.cartItem.create({
         data: {
           qty: args.qty,
-          shopCartId: 1,
+          shopCartId: 4,
           bookId: args.bookId,
         },
       });
