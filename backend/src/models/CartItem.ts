@@ -55,6 +55,18 @@ builder.mutationField("addToCart", (t) =>
   })
 );
 
+builder.mutationField("deleteCart", (t) =>
+  t.prismaField({
+    type: "CartItem",
+    args: {
+      id: t.arg.int({ required: true }),
+    },
+    resolve: async (query, _root, { id }) => {
+      return prisma.cartItem.delete({ where: { id } });
+    },
+  })
+);
+
 // builder.mutationField("createOneMessage", (t) =>
 //   t.prismaField({
 //     type: "Message",
