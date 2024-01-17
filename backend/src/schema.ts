@@ -5,6 +5,7 @@ import "./models/User";
 import "./models/Book";
 import "./models/ShopCart";
 import "./models/CartItem";
+import "./models/BookLikes";
 // import "./models";
 
 export const schema = builder.toSchema({});
