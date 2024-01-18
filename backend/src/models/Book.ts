@@ -56,6 +56,27 @@ builder.queryFields((t) => ({
       });
     },
   }),
+  searchBooks: t.prismaField({
+    type: ["Book"],
+    nullable: true,
+    args: {
+      title: t.arg.string({ required: true }),
+    },
+    resolve: async (query, _, args) => {
+      return prisma.book.findMany({
+        // where: {
+        //   id: args.id,
+        // },
+        // ...query,
+        where: {
+          title: {
+            contains: args.title,
+            mode: "insensitive", // case-insensitive
+          },
+        },
+      });
+    },
+  }),
 }));
 
 // builder.queryField("Book", (t) =>
