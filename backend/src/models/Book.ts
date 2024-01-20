@@ -13,8 +13,8 @@ builder.prismaObject("Book", {
     title: t.exposeString("title"),
     desc: t.exposeString("desc", { nullable: true }),
     img: t.exposeString("img"),
-    catagory: t.exposeString("catagory"),
-    price: t.exposeInt("price"),
+    // catagory: t.exposeString("catagory"),
+    // price: t.exposeInt("price"),
     createdAt: t.expose("createdAt", {
       type: "Date",
     }),
