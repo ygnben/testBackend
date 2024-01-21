@@ -49,7 +49,7 @@ const getUser = async (token: string) => {
     const decoded = jwt.verify(token1, SECRET);
     const obj = decoded;
 
-    const userId = (obj as any).user.id || 1;
+    const userId = (obj as any).user.id;
     // const obj2 = {
     //   id: userId,
     // };
