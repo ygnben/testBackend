@@ -67,6 +67,27 @@ builder.mutationField("deleteCart", (t) =>
   })
 );
 
+builder.mutationField("deleteAll", (t) =>
+  t.field({
+    type: "Int",
+    // args: {
+    //   id: t.arg.int({ required: true }),
+    // },
+    resolve: async (_root, args, contextValue) => {
+      // const deleteCount = await prisma.cartItem.deleteMany({});
+      const shopCart = await prisma.shopCart.findFirst({
+        where: { userId: contextValue.user },
+      });
+      const deleteResult = await prisma.cartItem.deleteMany({
+        where: {
+          shopCartId: shopCart?.id,
+        },
+      });
+      return deleteResult.count;
+    },
+  })
+);
+
 // builder.mutationField("createOneMessage", (t) =>
 //   t.prismaField({
 //     type: "Message",
